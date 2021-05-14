@@ -1,0 +1,51 @@
+#include<iostream>
+using namespace std;
+long long int N=5000000;
+long long int prefix[5000001];
+long long int seive[5000001];
+
+void genseive()
+{
+for(int i=0;i<N;i++)
+seive[i]=1;
+seive[0]=seive[1]=0;
+prefix[0]=prefix[1]=0;
+for(int i=2;i*i<=N;i++)
+{
+if(seive[i]==1)
+{
+for(int j=i*2;j<=N;j+=i)
+seive[j]=0;
+}
+prefix[i]=prefix[i-1];
+if(seive[i]==1)
+	prefix[i]+=i;
+
+}
+/*prefix[0]=prefix[1]=0;
+for(int p=2;p<=N;p++)
+{
+prefix[p]=prefix[p-1];
+if(seive[p]==1)
+	prefix[p]+=p;
+}*/
+}
+int primesum(long long int l,long long int r)
+{
+genseive();
+return prefix[r]-prefix[l];
+}
+int main()
+{
+ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+int n;
+cin>>n;
+while(n--)
+{
+long long int l,r;
+cin>>l>>r;
+cout<<primesum(l,r)<<"\n";
+}
+return 0;
+}
